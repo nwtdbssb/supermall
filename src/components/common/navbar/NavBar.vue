@@ -25,6 +25,11 @@ export default {
   text-align: center;
   font-size: 20px;
   box-shadow: 0px 2px 2px rgba(100, 100, 100, 0.08);
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 999;
 }
 .left,
 .right {
