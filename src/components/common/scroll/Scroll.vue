@@ -30,6 +30,7 @@ export default {
     // 1.创建BScroll对象
     this.scroll = new BScroll(this.$refs.wrapper, {
       observeDOM: true,
+      observeImage: true,
       click: true,
       probeType: this.probeType,
       mouseWheel: true,
@@ -37,20 +38,23 @@ export default {
     })
 
     // 2.监听滚动的位置
-    this.scroll.on('scroll', (position) => {
-      this.$emit('scroll', position)
-    })
+    if (this.probeType === 2 || this.probeType === 3) {
+      this.scroll.on('scroll', (position) => {
+        this.$emit('scroll', position)
+      })
+    }
+    // 3.监听上拉事件（监听scroll滚动到底部）
+    if (this.pullUpLoad) {
+      this.scroll.on('pullingUp', () => {
+        this.$emit('pullingUp')
+        // 发送网络请求，请求更多页的数据
 
-    // 3.监听上拉事件
-    this.scroll.on('pullingUp', () => {
-      this.$emit('pullingUp')
-      // 发送网络请求，请求更多页的数据
-
-      // 等数据请求完成，并且将新的数据展示出来后,setTimeout可以防止多次请求
-      setTimeout(() => {
-        this.scroll.finishPullUp()
-      }, 2000)
-    })
+        // 等数据请求完成，并且将新的数据展示出来后,setTimeout可以防止多次请求
+        setTimeout(() => {
+          this.scroll.finishPullUp()
+        }, 2000)
+      })
+    }
   },
   methods: {
     scrollTo (x, y, time = 300) {
