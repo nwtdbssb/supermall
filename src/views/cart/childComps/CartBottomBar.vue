@@ -7,7 +7,9 @@
     />
     <span>全选</span>
     <span class="total-price">合计: ¥{{ totalPrice }}</span>
-    <span class="buy-product">去计算({{ checkLength }})</span>
+    <span class="buy-product" @click="calcClick"
+      >去计算({{ checkLength }})</span
+    >
   </div>
 </template>
 
@@ -33,23 +35,36 @@ export default {
       return this.cartList.filter(item => item.checked).length
     },
     isSelectAll () {
-      return this.cartList.find(item => item.checked === false) === undefined;
+      return this.cartList.length == 0 ? false : this.cartList.every(item => item.checked)
+      // return !this.cartList.find(item => !item.checked);
+      // return this.cartList.length == this.checkLength
     }
   },
   methods: {
-    checkBtnClick: function () {
+    checkBtnClick () {
       // 1.判断是否有未选中的按钮
-      let isSelectAll = this.$store.getters.cartList.find(item => !item.checked);
+      // let isSelectAll = this.$store.getters.cartList.find(item => !item.checked);
 
       // 2.有未选中的内容, 则全部选中
-      if (isSelectAll) {
-        this.$store.state.cartList.forEach(item => {
-          item.checked = true;
-        });
+      /*       if (isSelectAll) {
+              this.$store.state.cartList.forEach(item => {
+                item.checked = true;
+              });
+            } else {
+              this.$store.state.cartList.forEach(item => {
+                item.checked = false;
+              });
+            }*/
+      /* if (this.isSelectAll) {
+        this.cartList.forEach(item => item.checked = false);
       } else {
-        this.$store.state.cartList.forEach(item => {
-          item.checked = false;
-        });
+        this.cartList.forEach(item => item.checked = true);
+      } */
+      this.isSelectAll ? this.cartList.forEach(item => item.checked = false) : this.cartList.forEach(item => item.checked = true)
+    },
+    calcClick () {
+      if (this.cartList.every(item => !item.checked)) {
+        this.$toast.show('请选择购买的商品', 2000)
       }
     }
   }
@@ -64,10 +79,10 @@ export default {
   position: fixed;
   bottom: 50px;
   left: 0;
-  box-shadow: 0 -2px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.1);
   font-size: 14px;
   color: #888;
-  line-height: 44px;
+  line-height: 40px;
   padding-left: 35px;
   box-sizing: border-box;
 }
@@ -89,9 +104,9 @@ export default {
   background-color: orangered;
   color: #fff;
   width: 100px;
-  height: 44px;
+  height: 40px;
   text-align: center;
-  line-height: 44px;
+  line-height: 40px;
   float: right;
 }
 </style>

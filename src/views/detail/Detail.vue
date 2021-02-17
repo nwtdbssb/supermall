@@ -18,7 +18,7 @@
       <detail-comment-info ref="comment" :comment-info="commentInfo" />
       <goods-list ref="recommend" :goods="recommends" />
     </scroll>
-    <detail-bottom-bar @addToCart="addToCart" />
+    <detail-bottom-bar @addToCart="addCart" />
     <back-top @click.native="btClick" v-show="isShowBackTop"></back-top>
   </div>
 </template>
@@ -38,6 +38,8 @@ import Scroll from '@components/common/scroll/Scroll'
 import { getDetail, Goods, Shop, GoodsParam, getRecommend } from '@network/detail'
 import GoodsList from '@components/content/goods/GoodsList'
 import { itemListenerMixin, backTopMixin } from '@common/mixin'
+
+import { mapActions } from 'vuex'
 
 export default {
   name: 'Detail',
@@ -106,6 +108,7 @@ export default {
     })
   },
   methods: {
+    ...mapActions(['addToCart']),
     detailImageLoad () {
       this.$refs.scroll.refresh()
 
@@ -133,7 +136,7 @@ export default {
       // 3.是否显示回到顶部
       this.listenShowBackTop(position)
     },
-    addToCart () {
+    addCart () {
       // 1.获取购物车需要展示的商品信息
       const product = {}
       product.image = this.topImages[0]
@@ -144,7 +147,13 @@ export default {
       product.iid = this.iid
 
       // 2.将商品添加到购物车里
-      this.$store.dispatch('addToCart', product)
+      /* this.$store.dispatch('addToCart', product).then(res => {
+        console.log(res)
+      }) */
+      this.addToCart(product).then(res => {
+        // console.log(res)
+        this.$toast.show(res)
+      })
     }
   },
   mounted () {
@@ -158,7 +167,7 @@ export default {
 <style scoped>
 #detail {
   position: relative;
-  z-index: 9999;
+  z-index: 9998;
   background-color: #fff;
   height: 100vh;
 }
