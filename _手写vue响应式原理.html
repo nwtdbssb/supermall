@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <div id="app">
+    <input type="text" v-model='message'>
+    {{message}}
+  </div>
+
+  <!-- <script src="./node_modules/vue/dist/vue.js"></script> -->
+
+  <script>
+    class Vue {
+      constructor(options) {
+        // 1.保存数据
+        this.$options = options
+        this.data = options.data
+        this.$el = options.el
+
+        // 2.将data添加到响应式系统中
+        
+      }
+    }
+
+  </script>
+
+
+  <script>
+    const app = new Vue({
+      el: '#app',
+      data: {
+        message: '你好啊',
+        // info: {
+        //   name: 'why',
+        //   age: 18
+        // }
+      }
+    })
+  </script>
+</body>
+
+</html>
